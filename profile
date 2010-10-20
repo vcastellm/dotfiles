@@ -12,3 +12,5 @@ alias l='ls -CF'
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 export PKG_CONFIG_PATH
+
+[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm

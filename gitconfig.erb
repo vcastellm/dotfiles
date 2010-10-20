@@ -1,0 +1,37 @@
+[user]
+  name = <%= print("Your Name: "); STDOUT.flush; STDIN.gets.chomp %>
+  email = <%= print("Your Email: "); STDOUT.flush; STDIN.gets.chomp %>
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[alias]
+  br = branch
+  branches = branch -a -v
+  ci = commit
+  co = checkout
+  diffm = !git diff | mate
+  incoming = !sh -c 'git fetch && git log ..origin'
+  tree = log --graph --prettyfor ($i = 0; $imat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  st = status
+  tags = tag -n1
+  tip = log -n 1 --stat --no-merges
+  outgoing = diff master origin/master
+  pick = cherry-pick
+  undo = !sh -c 'git reset --soft HEAD^ && git reset HEAD && git status'
+  undomerge = reset --hard ORIG_HEAD
+  unstage = reset HEAD
+  pu = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
+[core]
+  excludesfile = <%= ENV['HOME'] %>/.gitignore
+  editor = vim
+[github]
+  user = <%= print("GitHub Username: "); STDOUT.flush; STDIN.gets.chomp %>
+  token = <%= print("GitHub API Token: "); STDOUT.flush; STDIN.gets.chomp %>
+  

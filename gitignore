@@ -1,0 +1,10 @@
+.DS_Store
+# /sites/default/files/imagecache/
+/sites/default/files/imagecache/*
+
+# /sites/default/files/imagefield_thumbs/
+/sites/default/files/imagefield_thumbs/*
+
+/sites/default/tmp/*
+
+.~lock.*

@@ -12,3 +12,9 @@
 #SASS
 .sass-cache/
 .sass-cache/*
+
+#eclipse
+.project
+.settings
+.settings/*
+.buildpath

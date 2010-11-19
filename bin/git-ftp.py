@@ -36,19 +36,32 @@ import getpass
 import ConfigParser
 import optparse
 import logging
+import textwrap
 
 from git import Tree, Blob, Repo, Git
+
+class BranchNotFound(Exception):
+    pass
+
+class FtpDataOldVersion(Exception):
+    pass
 
 def main():
     Git.git_binary = 'git' # Windows doesn't like env
 
     repo, options, args = parse_args()
 
-    if repo.is_dirty:
+    if repo.is_dirty and not options.commit:
         logging.warning("Working copy is dirty; uncommitted changes will NOT be uploaded")
 
     base = options.ftp.remotepath
-    commit = repo.commit()
+    try:
+        branch = (h for h in repo.heads if h.name == options.branch).next()
+    except StopIteration:
+        raise BranchNotFound
+    commit = branch.commit
+    if options.commit:
+        commit = repo.commit(options.commit)
     tree   = commit.tree
     ftp    = ftplib.FTP(options.ftp.hostname, options.ftp.username, options.ftp.password)
 
@@ -72,18 +85,23 @@ def main():
     ftp.quit()
 
 def parse_args():
-    usage = """usage: %prog [DIRECTORY]
-
-This script uploads files in a Git repository to a
-website via FTP, but is smart and only uploads file
-that have changed."""
-    parser = optparse.OptionParser(usage)
+    usage = 'usage: %prog [OPTIONS] [DIRECTORY]'
+    desc = """\
+           This script uploads files in a Git repository to a
+           website via FTP, but is smart and only uploads file
+           that have changed.
+           """
+    parser = optparse.OptionParser(usage, description=textwrap.dedent(desc))
     parser.add_option('-f', '--force', dest="force", action="store_true", default=False,
             help="force the reupload of all files")
-    parser.add_option('-v', '--verbose', dest="verbose", action="store_true", default=False,
-            help="be verbose")
+    parser.add_option('-q', '--quiet', dest="quiet", action="store_true", default=False,
+            help="quiet output")
     parser.add_option('-r', '--revision', dest="revision", default=None,
             help="use this revision instead of the server stored one")
+    parser.add_option('-b', '--branch', dest="branch", default=None,
+            help="use this branch instead of the active one")
+    parser.add_option('-c', '--commit', dest="commit", default=None,
+            help="use this commit instead of HEAD")
     options, args = parser.parse_args()
     configure_logging(options)
     if len(args) > 1:
@@ -91,12 +109,16 @@ that have changed."""
     if args: cwd = args[0]
     else: cwd = "."
     repo = Repo(cwd)
+
+    if not options.branch:
+        options.branch = repo.active_branch.name
+
     get_ftp_creds(repo, options)
     return repo, options, args
 
 def configure_logging(options):
     logger = logging.getLogger()
-    if options.verbose: logger.setLevel(logging.INFO)
+    if not options.quiet: logger.setLevel(logging.INFO)
     ch = logging.StreamHandler(sys.stderr)
     formatter = logging.Formatter("%(levelname)s: %(message)s")
     ch.setFormatter(formatter)
@@ -106,6 +128,14 @@ def format_mode(mode):
     return "%o" % (mode & 0o777)
 
 class FtpData():
+    
+    def __str__( self ) :
+      return "[master]\n" + \
+        "username=" + self.username + "\n" + \
+        "password=" + self.password + "\n" + \
+        "hostname=" + self.hostname + "\n" + \
+        "remotepath=" + self.remotepath + "\n"
+         
     password = None
     username = None
     hostname = None
@@ -116,14 +146,13 @@ def get_ftp_creds(repo, options):
     Retrieves the data to connect to the FTP from .git/ftpdata
     or interactively.
 
-    ftpdata format example::
+    ftpdata format example:
 
-        [ftp]
+        [branch]
         username=me
         password=s00perP4zzw0rd
         hostname=ftp.hostname.com
         remotepath=/htdocs
-        repository=/home/me/website
 
     Please note that it isn't necessary to have this file,
     you'll be asked for the data every time you upload something.
@@ -136,19 +165,30 @@ def get_ftp_creds(repo, options):
         cfg = ConfigParser.ConfigParser()
         cfg.read(ftpdata)
 
+        if (not cfg.has_section(options.branch)) and cfg.has_section('ftp'):
+            raise FtpDataOldVersion("Please rename the [ftp] section to [branch]. " +
+                                    "Take a look at the README for more information")
+
         # just in case you do not want to store your ftp password.
         try:
-            options.ftp.password = cfg.get('ftp','password')
-        except:
+            options.ftp.password = cfg.get(options.branch,'password')
+        except ConfigParser.NoOptionError:
             options.ftp.password = getpass.getpass('FTP Password: ')
-        options.ftp.username = cfg.get('ftp','username')
-        options.ftp.hostname = cfg.get('ftp','hostname')
-        options.ftp.remotepath = cfg.get('ftp','remotepath')
+
+        options.ftp.username = cfg.get(options.branch,'username')
+        options.ftp.hostname = cfg.get(options.branch,'hostname')
+        options.ftp.remotepath = cfg.get(options.branch,'remotepath')
     else:
         options.ftp.username = raw_input('FTP Username: ')
         options.ftp.password = getpass.getpass('FTP Password: ')
         options.ftp.hostname = raw_input('FTP Hostname: ')
         options.ftp.remotepath = raw_input('Remote Path: ')
+   
+        #set default branch
+        if ask_ok("Should I write ftp details to .git/ftpdata? [Y/N]"):
+            f = open(ftpdata, 'w')
+            f.write(str(options.ftp))
+        
 
 def upload_all(tree, ftp, base):
     """Upload all items in a Git tree.
@@ -169,14 +209,25 @@ def upload_all(tree, ftp, base):
             pass
         upload_all(subtree, ftp, '/'.join((base, subtree.name)))
 
+    ftp.cwd(base)
     for blob in tree.blobs:
         logging.info('Uploading ' + '/'.join((base, blob.name)))
+        
         try:
             ftp.delete(blob.name)
         except ftplib.error_perm:
-            pass
-        ftp.storbinary('STOR ' + blob.name, blob.data_stream)
-        ftp.voidcmd('SITE CHMOD ' + format_mode(blob.mode) + ' ' + blob.name)
+            logging.info('Non existent or error trying to delete: ' + blob.name)
+        
+        try:
+            ftp.storbinary('STOR ' + blob.name, blob.data_stream)
+        except ftplib.error_perm:
+            logging.info('Error trying to upload: ' + blob.name)
+        
+        try:
+            ftp.voidcmd('SITE CHMOD ' + format_mode(blob.mode) + ' ' + blob.name)
+        except ftplib.error_perm:
+            logging.info('Error trying to change permissions for: ' + blob.name)
+            
 
 def upload_diff(diff, tree, ftp, base):
     """Upload and/or delete items according to a Git diff.
@@ -190,14 +241,32 @@ def upload_diff(diff, tree, ftp, base):
             slash.
 
     """
+    dirs_present = []
+    ftp.cwd(base)
     for line in diff:
         if not line: continue
         status, file = line.split("\t", 1)
-        target = '/'.join((base, file))
+        full_path = '/'.join((base, file))
         if status == "D":
             try:
-                ftp.delete(target)
-                logging.info('Deleted ' + target)
+                ftp.delete(file)
+                logging.info('Deleted ' + full_path)
+                # Now let's see if we need to remove some subdirectories
+                subtree = tree
+                dir_to_remove = []
+                def dir_reduce(dirs, dir):
+                    if dirs:
+                        return dirs + [dirs[-1] + '/' + dir]
+                    return [dir]
+                for dir in reduce(dir_reduce, file.split("/")[:-1], []):
+                    if subtree and dir[-1] in subtree:
+                        subtree = subtree/dir[-1]
+                    else:
+                        subtree = None
+                        dir_to_remove.append(dir)
+                dir_to_remove.reverse()
+                for dir in dir_to_remove:
+                    ftp.rmd(dir)
             except ftplib.error_perm:
                 pass
         else:
@@ -205,26 +274,33 @@ def upload_diff(diff, tree, ftp, base):
             subtree = tree
             for c in components[:-1]:
                 subtree = subtree/c
+                # We need to make sure the directory is present
+                if subtree.path not in dirs_present:
+                    try:
+                        ftp.mkd(subtree.path)
+                        dirs_present.append(subtree.path)
+                    except ftplib.error_perm:
+                        pass
             node = subtree/components[-1]
-            if isinstance(node, Tree):
-                init_dir = False
-                try:
-                    logging.info('Creating directory ' + target)
-                    ftp.mkd(target)
-                    init_dir = True
-                except ftplib.error_perm:
-                    pass
-                if init_dir:
-                    # This holds the risk of missing files to upload if
-                    # the directory is created, but the files are not
-                    # complete.
-                    upload_all(node, ftp, target)
-            elif isinstance(node, Blob):
-                logging.info('Uploading ' + target)
-                ftp.storbinary('STOR ' + target, node.data_stream)
-                ftp.voidcmd('SITE CHMOD ' + format_mode(node.mode) + ' ' + target)
+            assert isinstance(node, Blob)
+
+            logging.info('Uploading ' + full_path)
+            ftp.storbinary('STOR ' + file, node.data_stream)
+            ftp.voidcmd('SITE CHMOD ' + format_mode(node.mode) + ' ' + file)
             # Don't do anything if there isn't any item; maybe it
             # was deleted.
+
+def ask_ok(prompt, retries=4, complaint='Yes or no, please!'):
+    while True:
+        ok = raw_input(prompt)
+        if ok in ('y', 'ye', 'yes'):
+            return True
+        if ok in ('n', 'no', 'nop', 'nope'):
+            return False
+        retries = retries - 1
+        if retries < 0:
+            raise IOError('refusenik user')
+        print complaint
 
 if __name__ == "__main__":
     main()

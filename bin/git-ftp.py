@@ -128,14 +128,6 @@ def format_mode(mode):
     return "%o" % (mode & 0o777)
 
 class FtpData():
-    
-    def __str__( self ) :
-      return "[master]\n" + \
-        "username=" + self.username + "\n" + \
-        "password=" + self.password + "\n" + \
-        "hostname=" + self.hostname + "\n" + \
-        "remotepath=" + self.remotepath + "\n"
-         
     password = None
     username = None
     hostname = None
@@ -160,9 +152,9 @@ def get_ftp_creds(repo, options):
 
     ftpdata = os.path.join(repo.git_dir, "ftpdata")
     options.ftp = FtpData()
+    cfg = ConfigParser.ConfigParser()
     if os.path.isfile(ftpdata):
         logging.info("Using .git/ftpdata")
-        cfg = ConfigParser.ConfigParser()
         cfg.read(ftpdata)
 
         if (not cfg.has_section(options.branch)) and cfg.has_section('ftp'):
@@ -185,10 +177,14 @@ def get_ftp_creds(repo, options):
         options.ftp.remotepath = raw_input('Remote Path: ')
    
         #set default branch
-        if ask_ok("Should I write ftp details to .git/ftpdata? [Y/N]"):
+        if ask_ok("Should I write ftp details to .git/ftpdata? "):
+            cfg.add_section(options.branch)
+            cfg.set(options.branch, 'username', options.ftp.username)
+            cfg.set(options.branch, 'password', options.ftp.password)
+            cfg.set(options.branch, 'hostname', options.ftp.hostname)
+            cfg.set(options.branch, 'remotepath', options.ftp.remotepath)
             f = open(ftpdata, 'w')
-            f.write(str(options.ftp))
-        
+            cfg.write(f)
 
 def upload_all(tree, ftp, base):
     """Upload all items in a Git tree.
@@ -210,11 +206,12 @@ def upload_all(tree, ftp, base):
         upload_all(subtree, ftp, '/'.join((base, subtree.name)))
 
     ftp.cwd(base)
+    target = '/'.join((base, blob.name))
     for blob in tree.blobs:
         logging.info('Uploading ' + '/'.join((base, blob.name)))
-        
+
         try:
-            ftp.delete(blob.name)
+            ftp.delete(target)
         except ftplib.error_perm:
             logging.info('Non existent or error trying to delete: ' + blob.name)
         
@@ -227,7 +224,7 @@ def upload_all(tree, ftp, base):
             ftp.voidcmd('SITE CHMOD ' + format_mode(blob.mode) + ' ' + blob.name)
         except ftplib.error_perm:
             logging.info('Error trying to change permissions for: ' + blob.name)
-            
+
 
 def upload_diff(diff, tree, ftp, base):
     """Upload and/or delete items according to a Git diff.
@@ -292,14 +289,14 @@ def upload_diff(diff, tree, ftp, base):
 
 def ask_ok(prompt, retries=4, complaint='Yes or no, please!'):
     while True:
-        ok = raw_input(prompt)
+        ok = raw_input(prompt).lower()
         if ok in ('y', 'ye', 'yes'):
             return True
         if ok in ('n', 'no', 'nop', 'nope'):
             return False
         retries = retries - 1
         if retries < 0:
-            raise IOError('refusenik user')
+            raise IOError('Wrong user input.')
         print complaint
 
 if __name__ == "__main__":

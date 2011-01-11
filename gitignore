@@ -18,3 +18,5 @@
 .settings
 .settings/*
 .buildpath
+
+*.swp

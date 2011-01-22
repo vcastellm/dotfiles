@@ -52,6 +52,8 @@ set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{fugitive#statusline()}%{exists('*Cap
 " Or use vividchalk
 colorscheme topfunky-light
 
+let mapleader=" "
+
 " Tab mappings.
 map <leader>tt :tabnew<cr>
 map <leader>te :tabedit
@@ -63,8 +65,12 @@ map <leader>tf :tabfirst<cr>
 map <leader>tl :tablast<cr>
 map <leader>tm :tabmove
 
+" NERDTree configuration
+let NERDTreeIgnore=['\.rbc$', '\~$']
+map <Leader>n :NERDTreeToggle<CR>
+
 " Uncomment to use Jamis Buck's file opening plugin
-"map <Leader>t :FuzzyFinderTextMate<Enter>
+map <Leader>t :FuzzyFinderTextMate<Enter>
 
 " Controversial...swap colon and semicolon for easier commands
 "nnoremap ; :

@@ -1,11 +1,11 @@
 .DS_Store
 # /sites/default/files/imagecache/
-/sites/default/files/imagecache/*
+sites/default/files/imagecache/*
 
 # /sites/default/files/imagefield_thumbs/
-/sites/default/files/imagefield_thumbs/*
+sites/default/files/imagefield_thumbs/*
 
-/sites/default/tmp/*
+sites/default/tmp/*
 
 .~lock.*
 
@@ -14,7 +14,7 @@
 .sass-cache/*
 
 #eclipse
-.project
+#.project
 .settings
 .settings/*
 .buildpath

@@ -20,3 +20,5 @@ sites/default/tmp/*
 .buildpath
 
 *.swp
+
+.idea/*

@@ -30,6 +30,8 @@ task :install do
       link_file(file)
     end
   end
+
+  sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh'
 end
 
 def replace_file(file)

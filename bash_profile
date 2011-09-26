@@ -50,3 +50,4 @@ PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 export PKG_CONFIG_PATH
 
 export NODE_PATH="/usr/local/lib/node"
+export GOROOT="/usr/local/Cellar/go/r60.1"

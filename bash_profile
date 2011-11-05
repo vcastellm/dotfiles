@@ -1,14 +1,8 @@
 #!/bin/bash
 
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# Path to the bash it configuration
-export BASH=$HOME/.bash_it
-
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
-export BASH_THEME='bobby'
+export BASH_THEME='envy'
 
 # Set my editor and git editor
 export EDITOR="/usr/bin/subl -w"
@@ -27,6 +21,8 @@ export TODO="t"
 # https://github.com/xvzf/vcprompt
 #export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
 
+# Path to the bash it configuration
+export BASH=$HOME/.bash_it
 # Load Bash It
 source $BASH/bash_it.sh
 

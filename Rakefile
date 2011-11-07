@@ -32,6 +32,7 @@ task :install do
   end
 
   sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh'
+  sh 'curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh'
 end
 
 def replace_file(file)

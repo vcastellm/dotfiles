@@ -31,7 +31,7 @@ task :install do
     end
   end
 
-  sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh'
+  sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh' unless File.exist?(File.join(ENV['HOME'], ".bash_it"))
   sh 'curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh'
 end
 

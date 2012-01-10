@@ -27,7 +27,7 @@ export BASH=$HOME/.bash_it
 source $BASH/bash_it.sh
 
 # Custom PATHS
-export PATH="~/bin:~/.bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/git/bin:$PATH"
+export PATH="~/bin:~/.bin:/usr/local/bin:/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
 PKG_CONFIG_PATH=/usr/lib/pkgconfig/
@@ -35,4 +35,5 @@ export PKG_CONFIG_PATH
 
 export NODE_PATH="/usr/local/lib/node"
 
-export GOROOT="/usr/local/Cellar/go/r60.1"
+export PATH="/usr/local/go/bin:$PATH"
+export GOROOT="/usr/local/go"

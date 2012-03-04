@@ -31,8 +31,22 @@ task :install do
     end
   end
 
-  sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh' unless File.exist?(File.join(ENV['HOME'], ".bash_it"))
-  sh 'curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh'
+  print "Do you want to install bash_it? [yn] "
+  case $stdin.gets.chomp
+  when 'y'
+    sh 'git clone http://github.com/victorcoder/bash-it.git ~/.bash_it && ~/.bash_it/install.sh' unless File.exist?(File.join(ENV['HOME'], ".bash_it"))
+  else
+    puts "skipping bash-it install"
+  end  
+  
+  print "Do you want to install VIM Janus? [yn] "
+  case $stdin.gets.chomp
+  when 'y'
+    sh 'curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh'
+  else
+    puts "skipping Janus install"
+  end
+  
 end
 
 def replace_file(file)

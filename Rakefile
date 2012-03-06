@@ -42,7 +42,7 @@ task :install do
   print "Do you want to install VIM Janus? [yn] "
   case $stdin.gets.chomp
   when 'y'
-    sh 'curl https://raw.github.com/carlhuda/janus/master/bootstrap.sh -o - | sh'
+    sh 'curl -Lo- http://bit.ly/janus-bootstrap | bash'
   else
     puts "skipping Janus install"
   end

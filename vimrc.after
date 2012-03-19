@@ -1,4 +1,3 @@
 colorscheme solarized
 
-map <F2> :NERDTreeToggle<CR>
 set clipboard=unnamed

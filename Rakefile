@@ -37,7 +37,9 @@ task :install do
     sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh' unless File.exist?(File.join(ENV['HOME'], ".bash_it"))
   else
     puts "skipping bash-it install"
-  end    
+  end 
+
+  sh 'curl https://raw.github.com/victorcoder/vimfiles/master/vimrc > ~/.vimrc'   
 end
 
 def replace_file(file)

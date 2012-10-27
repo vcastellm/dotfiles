@@ -35,6 +35,7 @@ export PKG_CONFIG_PATH
 
 export NODE_PATH="/usr/local/lib/node"
 
-export PATH="/usr/local/go/bin:$PATH"
 export GOROOT="/usr/local/go"
 export GOPATH="$HOME/Code/go"
+
+export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"

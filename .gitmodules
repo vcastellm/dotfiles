@@ -1,6 +1,0 @@
-[submodule "janus/vim-indent-guides"]
-	path = janus/vim-indent-guides
-	url = git://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "janus/go.vim"]
-	path = janus/go.vim
-	url = https://github.com/vim-scripts/go.vim.git

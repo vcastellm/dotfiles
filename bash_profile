@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Lock and Load a custom theme file
-# location /.bash_it/themes/
-export BASH_THEME='envy'
-
 # Set my editor and git editor
 export EDITOR=vim
 export GIT_EDITOR=vim
@@ -11,10 +7,10 @@ export GIT_EDITOR=vim
 # Don't check mail when opening terminal.
 unset MAILCHECK
 
-# Path to the bash it configuration
-export BASH=$HOME/.bash_it
-# Load Bash It
-source $BASH/bash_it.sh
+source ~/.dotfiles/prompt
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
 
 export TERM=xterm-color
 export LANG=en_US.UTF-8
@@ -25,17 +21,34 @@ export LANGUAGE=en_US.UTF-8
 export PATH="~/bin:~/.bin:/usr/local/bin:/usr/local/sbin:./bin:$PATH"
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
-PKG_CONFIG_PATH=/usr/lib/pkgconfig/
-export PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
 export NODE_PATH="/usr/local/lib/node"
 
 export GOROOT="/usr/local/go"
-export GOPATH="$HOME/Code/go"
+if [ -d "$HOME/Code" ]; then
+  export GOPATH="$HOME/Code/go"
+  export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
+fi
 
-export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
-export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
-export PATH="/Applications/data-integration:$PATH"
-#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}: ${PWD/#$HOME/~}\007"'
+if [ -d "/Applications/Postgres.app" ]; then
+  export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+fi
 
-source $HOME/.auth
+if [ -d "/Applications/data-integration" ]; then
+  export PATH="/Applications/data-integration:$PATH"
+fi
+
+# Set your credentials in this file
+if [ -f "$HOME/.auth" ]; then
+  source $HOME/.auth
+fi
+
+alias vim='mvim -v'
+#source $HOME/Code/ansible/hacking/env-setup > /dev/null
+export AWS_DEFAULT_REGION=eu-west-1
+
+if [ -d "$HOME/.rbenv" ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi

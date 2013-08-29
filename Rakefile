@@ -5,15 +5,6 @@ desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
 
-  print "Do you want to install bash_it? [yn] "
-  case $stdin.gets.chomp
-  when 'y'
-    sh 'git clone http://github.com/revans/bash-it.git ~/.bash_it && ~/.bash_it/install.sh' unless File.exist?(File.join(ENV['HOME'], ".bash_it"))
-    sh 'git checkout .'
-  else
-    puts "skipping bash-it install"
-  end
-
   Dir['*'].each do |file|
     next if %w[Rakefile README.rdoc LICENSE].include? file
 

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -f /etc/profile ]; then
+    PATH=""
+    source /etc/profile
+fi
+
 # Set my editor and git editor
 export EDITOR=vim
 export GIT_EDITOR=vim

@@ -57,3 +57,7 @@ if [ -d "$HOME/.rbenv" ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi
+
+if [ -e "/usr/local/bin/direnv" ]; then
+  eval "$(direnv hook bash)"
+fi

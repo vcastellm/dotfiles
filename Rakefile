@@ -31,8 +31,6 @@ task :install do
       link_file(file)
     end
   end
-
-  sh 'curl https://raw.github.com/victorcoder/vimfiles/master/vimrc > ~/.vimrc'   
 end
 
 def replace_file(file)

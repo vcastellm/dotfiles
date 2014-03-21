@@ -23,7 +23,7 @@ export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 # Custom PATHS
-export PATH="~/bin:~/.bin:/usr/local/bin:/usr/local/sbin:./bin:$PATH"
+export PATH="~/bin:/usr/local/bin:/usr/local/sbin:./bin:$PATH"
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
@@ -61,3 +61,5 @@ fi
 if [ -e "/usr/local/bin/direnv" ]; then
   eval "$(direnv hook bash)"
 fi
+
+export DOCKER_HOST=tcp://localhost:4243

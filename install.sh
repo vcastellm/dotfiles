@@ -9,14 +9,8 @@ tmux_conf=$dotfiles/tmux.conf
 gitignore=$dotfiles/gitignore
 bin=$dotfiles/bin
 
-[[ ! -e $HOME/.zshrc ]] && ln -s $zshrc $HOME/.zshrc \
-  || echo ".zshrc already exists..."
-
 [[ ! -e $HOME/.vimrc ]] && ln -s $vimrc $HOME/.vimrc \
   || echo ".vimrc already exists..."
-
-[[ ! -e $HOME/.gvimrc ]] && ln -s $gvimrc $HOME/.gvimrc \
-  || echo ".gvimrc already exists..."
 
 [[ ! -e $HOME/.tmux.conf ]] && ln -s $tmux_conf $HOME/.tmux.conf \
   || echo ".tmux.conf already exists..."

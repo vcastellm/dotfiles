@@ -9,6 +9,9 @@ tmux_conf=$dotfiles/tmux.conf
 gitignore=$dotfiles/gitignore
 bin=$dotfiles/bin
 
+[[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
+  || echo ".bash_profile already exists..."
+
 [[ ! -e $HOME/.vimrc ]] && ln -s $vimrc $HOME/.vimrc \
   || echo ".vimrc already exists..."
 

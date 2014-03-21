@@ -18,9 +18,6 @@ bin=$dotfiles/bin
 [[ ! -e $HOME/.gvimrc ]] && ln -s $gvimrc $HOME/.gvimrc \
   || echo ".gvimrc already exists..."
 
-[[ ! -e $HOME/.vim ]] && ln -s $vimfiles $HOME/.vim \
-  || echo ".vim already exists..."
-
 [[ ! -e $HOME/.tmux.conf ]] && ln -s $tmux_conf $HOME/.tmux.conf \
   || echo ".tmux.conf already exists..."
 

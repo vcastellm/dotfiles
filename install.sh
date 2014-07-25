@@ -30,4 +30,7 @@ bin=$dotfiles/bin
 [[ ! -e $HOME/bin ]] && ln -s $bin $HOME/bin \
   || echo "bin already exists..."
 
+[[ ! -e $HOME/.gitconfig ]] && ruby -rerb -e "File.open('../.gitconfig', 'w') { |file| file.write(ERB.new(File.read('gitconfig.erb')).result) }" \
+  || echo "gitconfig already exists..."
+
 echo "Done"

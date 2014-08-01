@@ -28,6 +28,8 @@ Bundle 'Townk/vim-autoclose'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'ervandew/supertab'
 Bundle 'bling/vim-airline'
+Bundle 'chase/vim-ansible-yaml'
+Bundle 'altercation/vim-colors-solarized'
 if isdirectory(expand('~/Library/Python/2.7/lib/python/site-packages/powerline'))
   let g:airline_powerline_fonts = 1
 endif

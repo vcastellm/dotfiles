@@ -52,6 +52,8 @@ fi
 alias vim='mvim -v'
 #source $HOME/Code/ansible/hacking/env-setup > /dev/null
 export AWS_DEFAULT_REGION=eu-west-1
+export EC2_REGION=$AWS_DEFAULT_REGION
+export EC2_INI_PATH=ec2.ini
 
 if [ -d "$HOME/.rbenv" ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
@@ -63,3 +65,5 @@ if [ -e "/usr/local/bin/direnv" ]; then
 fi
 
 export DOCKER_HOST=tcp://localhost:4243
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export RBENV_VERSION=2.1.3

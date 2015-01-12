@@ -49,7 +49,6 @@ if [ -f "$HOME/.auth" ]; then
   source $HOME/.auth
 fi
 
-alias vim='mvim -v'
 #source $HOME/Code/ansible/hacking/env-setup > /dev/null
 export AWS_DEFAULT_REGION=eu-west-1
 export EC2_REGION=$AWS_DEFAULT_REGION

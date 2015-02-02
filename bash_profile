@@ -28,13 +28,8 @@ export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
-export NODE_PATH="/usr/local/lib/node"
-
-export GOROOT="/usr/local/go"
-if [ -d "$HOME/Code" ]; then
-  export GOPATH="$HOME/Code/go"
-  export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
-fi
+export GOPATH="$HOME"
+export PATH="$GOROOT/bin::$PATH"
 
 if [ -d "/Applications/Postgres.app" ]; then
   export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"

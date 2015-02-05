@@ -32,7 +32,7 @@ export GOPATH="$HOME"
 export PATH="$GOROOT/bin::$PATH"
 
 if [ -d "/Applications/Postgres.app" ]; then
-  export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+  export PATH="/Applications/Postgres.app/Contents/Versions/9.3/bin:$PATH"
 fi
 
 if [ -d "/Applications/data-integration" ]; then

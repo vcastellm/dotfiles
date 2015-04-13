@@ -58,6 +58,10 @@ if [ -e "/usr/local/bin/direnv" ]; then
   eval "$(direnv hook bash)"
 fi
 
-export DOCKER_HOST=tcp://localhost:4243
+export DOCKER_CERT_PATH=/Users/victorcoder/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.59.103:2376
+
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export RBENV_VERSION=2.1.3
+export RBENV_VERSION=2.2.1
+alias vim=nvim

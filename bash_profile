@@ -32,7 +32,7 @@ export GOPATH="$HOME"
 export PATH="$GOROOT/bin::$PATH"
 
 if [ -d "/Applications/Postgres.app" ]; then
-  export PATH="/Applications/Postgres.app/Contents/Versions/9.3/bin:$PATH"
+  export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 fi
 
 if [ -d "/Applications/data-integration" ]; then
@@ -63,5 +63,4 @@ export DOCKER_TLS_VERIFY=1
 export DOCKER_HOST=tcp://192.168.59.103:2376
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export RBENV_VERSION=2.2.1
 alias vim=nvim

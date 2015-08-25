@@ -8,6 +8,7 @@ vimfiles=$dotfiles/vimfiles
 tmux_conf=$dotfiles/tmux.conf
 gitignore=$dotfiles/gitignore
 bin=$dotfiles/bin
+ctags=$dotfiles/ctags
 
 [[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
   || echo ".bash_profile already exists..."
@@ -32,5 +33,8 @@ bin=$dotfiles/bin
 
 [[ ! -e $HOME/.gitconfig ]] && ruby -rerb -e "File.open('../.gitconfig', 'w') { |file| file.write(ERB.new(File.read('gitconfig.erb')).result) }" \
   || echo "gitconfig already exists..."
+
+[[ ! -e $HOME/ctags ]] && ln -s $ctags $HOME/.ctags \
+  || echo "ctags already exists..."
 
 echo "Done"

@@ -15,23 +15,24 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " Let NeoBundle manage NeoBundle
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundleFetch 'sjl/gundo.vim'
-NeoBundleFetch 'tpope/vim-fugitive'
-NeoBundleFetch 'tpope/vim-rails'
-NeoBundleFetch 'tpope/vim-rake'
-NeoBundleFetch 'tpope/vim-surround'
-NeoBundleFetch 'tpope/vim-vividchalk'
-NeoBundleFetch 'vim-ruby/vim-ruby'
-NeoBundleFetch 'mileszs/ack.vim'
-NeoBundleFetch 'vim-scripts/tComment'
-NeoBundleFetch 'scrooloose/syntastic'
-NeoBundleFetch 'Townk/vim-autoclose'
-NeoBundleFetch 'fatih/vim-go'
-NeoBundleFetch 'ervandew/supertab'
-NeoBundleFetch 'bling/vim-airline'
-NeoBundleFetch 'chase/vim-ansible-yaml'
-NeoBundleFetch 'altercation/vim-colors-solarized'
-NeoBundleFetch 'kien/ctrlp.vim'
+
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-rake'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-vividchalk'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'mileszs/ack.vim'
+NeoBundle 'vim-scripts/tComment'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Townk/vim-autoclose'
+NeoBundle 'fatih/vim-go'
+NeoBundle 'ervandew/supertab'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'chase/vim-ansible-yaml'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'kien/ctrlp.vim'
 
 call neobundle#end()
 NeoBundleCheck
@@ -63,6 +64,7 @@ autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype htmlcheetah setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype go setlocal ts=4 sts=4 sw=4
 autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
@@ -70,7 +72,6 @@ autocmd Filetype scss setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype css setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype eruby setlocal ts=2 sts=2 sw=2 expandtab
 " Autoformat go source files
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
 autocmd BufRead,BufNewFile *.md set filetype=markdown
 set autoindent smartindent smarttab
 set backspace=indent,eol,start
@@ -133,7 +134,7 @@ autocmd BufEnter * silent! lcd %:p:h
 
 syntax on
 set background=dark
-color vividchalk
+"color vividchalk
 
 fun! LoadColourScheme(schemes)
     let l:schemes = a:schemes . ":"
@@ -153,62 +154,7 @@ if has('gui')
 else
    if &t_Co == 88 || &t_Co == 256
        call LoadColourScheme("vividchalk:inkpot:desert256:darkblack:darkblue:elflord")
-    else
-"       call LoadColourScheme("desert256:darkblack:desert:darkblue:elflord")
-"       Colorize some default highlight groups
-"       see ":help highlight-default"
-"
-"            Comments: Colorizing the "comments" (see ":help comments").
-"            cyan on white does not look good on a black background..
-          hi comment                           ctermfg=cyan   ctermbg=black
-"         hi comment                           ctermfg=cyan   ctermbg=7
-"
-"       hi Cursor
-"       hi Directory
-"       hi ErrorMsg
-"       hi FoldColumn
-"       hi Folded
-"       hi IncSearch
-"
-"            LineNr:  Colorize the line numbers (displayed with
-"            "set number").
-"            Turn off default underlining of line numbers:
-          hi LineNr term=NONE cterm=NONE ctermfg=grey ctermbg=black
-"
-"       hi ModeMsg
-"       hi MoreMsg
-"
-"         coloring "nontext", ie TABs, trailing spaces,  end-of-lines,
-"         and the "tilde lines" representing lines after end-of-buffer.
-          hi NonText term=NONE cterm=NONE ctermfg=blue   ctermbg=black
-"
-"            Normal text:    Use white on black.
-"         hi normal ctermfg=white ctermbg=black guifg=white guibg=black
-          hi normal ctermfg=grey  ctermbg=black guifg=grey guibg=black
-"       Oops - this overrides the colors for the status line - DANG!
-"
-"       hi Question
-"
-"            Search: Coloring "search matches".  Use white on red.
-          hi search  ctermfg=white ctermbg=red     guifg=white guibg=red
-"
-"         hi SpecialKey
-"
-"            statusline: coloring the status line -> is not possible :-(
-"         hi StatusLine  term=NONE cterm=NONE ctermfg=yellow ctermbg=red
-"
-"         hi Title
-"         hi VertSplit
-"         hi Visual
-"         hi VisualNOS
-"         hi WarningMsg
-"         hi WildMenu
-"
-"         Other Groups:
-"
-"            Normal:  Coloring the text with a default color.
-          hi normal       term=NONE
-    endif
+   endif
 endif
 
 

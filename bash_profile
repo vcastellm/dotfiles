@@ -29,6 +29,7 @@ export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
 export GOPATH="$HOME"
+export GO15VENDOREXPERIMENT=1
 export PATH="$GOROOT/bin::$PATH"
 
 if [ -d "/Applications/Postgres.app" ]; then

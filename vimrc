@@ -28,11 +28,19 @@ NeoBundle 'vim-scripts/tComment'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'fatih/vim-go'
-NeoBundle 'ervandew/supertab'
+" NeoBundle 'ervandew/supertab'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'chase/vim-ansible-yaml'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'Valloric/YouCompleteMe', {
+     \ 'build'      : {
+        \ 'mac'     : './install.py',
+        \ 'unix'    : './install.py',
+        \ 'windows' : 'install.py',
+        \ 'cygwin'  : './install.py'
+        \ }
+     \ }
 
 call neobundle#end()
 NeoBundleCheck
@@ -58,21 +66,9 @@ set encoding=utf-8
 filetype plugin indent on
 filetype plugin on
 
-" set tabstop=2 softtabstop=2 shiftwidth=2 textwidth=0 expandtab
-autocmd Filetype html setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd BufNewFile,BufRead *.coffee set filetype=coffee
-autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype htmlcheetah setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype go setlocal ts=4 sts=4 sw=4
-autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
-autocmd Filetype scss setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype css setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype eruby setlocal ts=2 sts=2 sw=2 expandtab
-" Autoformat go source files
 autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd Filetype html,ruby,coffee,javascript,json,htmlcheetah,yaml,scss,css,eruby setlocal ts=2 sts=2 sw=2 expandtab
 set autoindent smartindent smarttab
 set backspace=indent,eol,start
 set hidden
@@ -130,33 +126,15 @@ autocmd BufEnter * silent! lcd %:p:h
 "   Colors
 " =========================
 "
-" Try to load a nice colourscheme
 
 syntax on
 set background=dark
-"color vividchalk
-
-fun! LoadColourScheme(schemes)
-    let l:schemes = a:schemes . ":"
-    while l:schemes != ""
-        let l:scheme = strpart(l:schemes, 0, stridx(l:schemes, ":"))
-        let l:schemes = strpart(l:schemes, stridx(l:schemes, ":") + 1)
-        try
-            exec "colorscheme" l:scheme
-            break
-        catch
-        endtry
-    endwhile
-endfun
-
-if has('gui')
-   call LoadColourScheme("inkpot:night:rainbow_night:darkblue:elflord")
-else
-   if &t_Co == 88 || &t_Co == 256
-       call LoadColourScheme("vividchalk:inkpot:desert256:darkblack:darkblue:elflord")
-   endif
-endif
-
+set t_Co=256
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+color solarized
 
 " =========================
 "   Vim UI
@@ -238,3 +216,5 @@ if v:version >= 700
     catch
     endtry
 endif
+
+set cursorline

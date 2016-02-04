@@ -4,46 +4,37 @@ let mapleader = ','
 if !executable('git')
   echo "info: [vim] Git is not installed and is required."
   exit
-elseif !isdirectory(expand('~/.vim/bundle/vundle'))
-  silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-  let s:bootstrap=1
 endif
 
-set runtimepath+=~/.vim/bundle/neobundle.vim/
-call neobundle#begin(expand('~/.vim/bundle/'))
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+call plug#begin('~/.vim/plugged')
 
-NeoBundle 'sjl/gundo.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-rake'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-vividchalk'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'mileszs/ack.vim'
-NeoBundle 'vim-scripts/tComment'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'Townk/vim-autoclose'
-NeoBundle 'fatih/vim-go'
-" NeoBundle 'ervandew/supertab'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'chase/vim-ansible-yaml'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'Valloric/YouCompleteMe', {
-     \ 'build'      : {
-        \ 'mac'     : './install.py',
-        \ 'unix'    : './install.py',
-        \ 'windows' : 'install.py',
-        \ 'cygwin'  : './install.py'
-        \ }
-     \ }
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vividchalk'
+Plug 'vim-ruby/vim-ruby'
+Plug 'mileszs/ack.vim'
+Plug 'vim-scripts/tComment'
+" Plug 'scrooloose/syntastic'
+Plug 'Townk/vim-autoclose'
+Plug 'fatih/vim-go'
+Plug 'bling/vim-airline'
+Plug 'chase/vim-ansible-yaml'
+Plug 'altercation/vim-colors-solarized'
+Plug 'kien/ctrlp.vim'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'benekastah/neomake'
 
-call neobundle#end()
-NeoBundleCheck
+" Add plugins to &runtimepath
+call plug#end()
 
 if isdirectory(expand('~/Library/Python/2.7/lib/python/site-packages/powerline'))
   let g:airline_powerline_fonts = 1
@@ -56,11 +47,6 @@ let g:ctrlp_mruf_relative = 1
 nmap <Leader>b :CtrlPBuffer<CR>
 nmap <Leader>e :CtrlPMRU<CR>
 nmap <Leader>o :CtrlPTag<CR>
-
-if exists("s:bootstrap") && s:bootstrap
-  unlet s:bootstrap
-  NeoBundleInstall
-endif
 
 set encoding=utf-8
 filetype plugin indent on
@@ -82,7 +68,7 @@ set wildmode=longest,list
 set wildignore+=.git,.hg,.svn
 set wildignore+=*.jpg,*.png,*.xpm,*.gif,*.ico
 set wildignore+=*~,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,.DS_Store,*.sql
-set wildignore+=tags,pkg,log,tmp,vendor/bundle,vendor/cache
+set wildignore+=tags,pkg,log,tmp,vendor/*
 set nowrap
 set complete-=i
 set autoread
@@ -104,6 +90,14 @@ set path=$PWD/**
 cnoremap %% <C-R>=expand('%:h') . '/' <CR>
 nnoremap <Leader><Leader> <c-^>
 nnoremap <F1> <nop>
+
+" Tab navigation like Firefox.
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap <C-t>     :tabnew<CR>
+inoremap <C-S-tab> <Esc>:tabprevious<CR>i
+inoremap <C-tab>   <Esc>:tabnext<CR>i
+inoremap <C-t>     <Esc>:tabnew<CR>
 
 if has('gui_running')
   set guifont=Monaco:h12
@@ -202,12 +196,16 @@ endif
   set   statusline+=%{&encoding},                " encoding
   set   statusline+=%{&fileformat}]              " file format
 
-if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
-  set   statusline+=\ %{VimBuddy()}          " vim buddy
-endif
   set   statusline+=%=                           " right align
   set   statusline+=0x%-8B\                      " current char
   set   statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
+
+  let g:neomake_enabled_makers = ['go', 'golint', 'govet', 'ruby']
+  autocmd! BufWritePost * Neomake
 
 " If possible, try to use a narrow number column.
 if v:version >= 700

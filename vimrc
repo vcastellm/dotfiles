@@ -32,6 +32,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'kien/ctrlp.vim'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'benekastah/neomake'
+Plug 'rust-lang/rust.vim'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -54,7 +55,9 @@ filetype plugin on
 
 autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 autocmd BufRead,BufNewFile *.md set filetype=markdown
-autocmd Filetype html,ruby,coffee,javascript,json,htmlcheetah,yaml,scss,css,eruby setlocal ts=2 sts=2 sw=2 expandtab
+autocmd BufRead,BufNewFile *.rs set filetype=rust
+autocmd Filetype html,ruby,coffee,javascript,json,htmlcheetah,yaml,scss,css,eruby,xml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype rust setlocal ts=4 sts=4 sw=4 expandtab
 set autoindent smartindent smarttab
 set backspace=indent,eol,start
 set hidden

@@ -62,6 +62,8 @@ if [ -d "$HOME/src/github.com/jobandtalent/system/script" ]; then
   export PATH="$HOME/src/github.com/jobandtalent/system/script:$PATH"
 fi
 
-if [ -d "/Applications/data-integration" ]; then
+if [ -d "/Applications/Visual Studio Code.app" ]; then
   export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
+
+export PATH="$PATH:~/Library/Python/2.7/bin"

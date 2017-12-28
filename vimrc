@@ -23,16 +23,16 @@ Plug 'tpope/vim-vividchalk'
 Plug 'vim-ruby/vim-ruby'
 Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/tComment'
-" Plug 'scrooloose/syntastic'
-Plug 'Townk/vim-autoclose'
+" Plug 'Townk/vim-autoclose'
 Plug 'fatih/vim-go'
 Plug 'bling/vim-airline'
 Plug 'chase/vim-ansible-yaml'
 Plug 'altercation/vim-colors-solarized'
 Plug 'kien/ctrlp.vim'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'benekastah/neomake'
 Plug 'rust-lang/rust.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'tpope/vim-repeat'
 
 " Add plugins to &runtimepath
 call plug#end()

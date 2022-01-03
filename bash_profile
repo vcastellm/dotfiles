@@ -14,9 +14,7 @@ unset MAILCHECK
 
 source ~/.dotfiles/prompt
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 export TERM=screen-256color
 export LANG=en_US.UTF-8
@@ -26,7 +24,6 @@ export LANGUAGE=en_US.UTF-8
 # Custom PATHS
 export PATH="~/bin:/usr/local/bin:/usr/local/sbin:./bin:$PATH"
 
-export GOROOT="/usr/local/opt/go/libexec"
 export PATH="$GOROOT/bin:$PATH"
 export GOPATH="$HOME"
 export PATH="$GOPATH/bin:$PATH"
@@ -41,9 +38,6 @@ if [ -f "$HOME/.auth" ]; then
 fi
 export TF_VAR_github_api_token=$VAULT_GITHUB_API_TOKEN
 
-export AWS_DEFAULT_REGION=eu-west-1
-export EC2_REGION=$AWS_DEFAULT_REGION
-
 if [ -d "$HOME/.rbenv" ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
@@ -53,8 +47,6 @@ if [ -e "/usr/local/bin/direnv" ]; then
   eval "$(direnv hook bash)"
 fi
 
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
 #gpg-agent Pretty good changelog https://www.gnupg.org/faq/whats-new-in-2.1.html
 #This step is not necesary, but due to the outdated state of gpg libs in vautl-tec, we need to be sure that the agent is running
 eval `gpg-agent --daemon 2>/dev/null`
@@ -62,22 +54,33 @@ eval `gpg-agent --daemon 2>/dev/null`
 export GPG_AGENT_INFO=${HOME}/.gnupg/S.gpg-agent:66568:1
 export GPG_TTY=$(tty)
 
-#if [ -d "$HOME/src/github.com/jobandtalent/system/script" ]; then
-#  export PATH="$HOME/src/github.com/jobandtalent/system/script:$PATH"
-#fi
-
 if [ -d "/Applications/Visual Studio Code.app" ]; then
   export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
-
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 alias yaegi='rlwrap yaegi'
 
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
-export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
-source "$HOME/.cargo/env"
+export PATH="/opt/homebrew/opt/python@3.9/libexec/bin:$PATH"
 export PATH="/Users/victorcoder/.local/share/solana/install/active_release/bin:$PATH"
 if [[ -x /usr/local/bin/monk ]]; then complete -C /usr/local/bin/monk monk; fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
+. "$HOME/.cargo/env"
+if [[ -x /opt/homebrew/bin/monk ]]; then complete -C /opt/homebrew/bin/monk monk; fi
+
+#AWSume alias to source the AWSume script
+alias awsume="source awsume"
+
+#Auto-Complete function for AWSume
+_awsume() {
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts=$(awsume-autocomplete)
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0
+}
+complete -F _awsume awsume

@@ -9,6 +9,7 @@ tmux_conf=$dotfiles/tmux.conf
 gitignore=$dotfiles/gitignore
 bin=$dotfiles/bin
 ctags=$dotfiles/ctags
+editorconfig=$dotfiles/editorconfig
 
 [[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
   || echo ".bash_profile already exists..."
@@ -36,5 +37,8 @@ ctags=$dotfiles/ctags
 
 [[ ! -e $HOME/ctags ]] && ln -s $ctags $HOME/.ctags \
   || echo "ctags already exists..."
+
+[[ ! -e $HOME/.editorconfig ]] && ln -s $editorconfig $HOME/.editorconfig \
+  || echo ".editorconfig already exists..."
 
 echo "Done"

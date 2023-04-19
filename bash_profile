@@ -59,8 +59,7 @@ if [ -d "/Applications/Visual Studio Code.app" ]; then
 fi
 
 alias yaegi='rlwrap yaegi'
-
-export WASMTIME_HOME="$HOME/.wasmtime"
+alias flamegraph='~/src/github.com/brendangregg/FlameGraph/flamegraph.pl'
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
 export PATH="/opt/homebrew/opt/python@3.9/libexec/bin:$PATH"
@@ -84,3 +83,13 @@ _awsume() {
     return 0
 }
 complete -F _awsume awsume
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/vcastellm/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/Users/vcastellm/Downloads/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/vcastellm/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/vcastellm/Downloads/google-cloud-sdk/completion.bash.inc'; fi
+export PATH="/opt/homebrew/opt/go@1.18/bin:$PATH"
+export PATH="$PATH:/Users/vcastellm/.foundry/bin"
+
+

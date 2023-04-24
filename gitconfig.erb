@@ -1,6 +1,9 @@
 [user]
   name = <%= print("Your Name: "); STDOUT.flush; STDIN.gets.chomp %>
   email = <%= print("Your Email: "); STDOUT.flush; STDIN.gets.chomp %>
+	signingkey = <%= ENV['HOME'] %>/.ssh/id_ed25519.pub
+[gpg]
+	format = ssh
 [color]
   branch = auto
   diff = auto

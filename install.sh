@@ -1,6 +1,8 @@
 #! /bin/bash
 dotfiles=$HOME/.dotfiles
 bash_profile=$dotfiles/bash_profile
+zshenv=$dotfiles/zshenv
+zprofile=$dotfiles/zprofile
 vimrc=$dotfiles/vimrc
 irbrc=$dotfiles/irbrc
 gemrc=$dotfiles/gemrc
@@ -13,6 +15,12 @@ editorconfig=$dotfiles/editorconfig
 
 [[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
   || echo ".bash_profile already exists..."
+
+[[ ! -e $HOME/.zshenv ]] && ln -s $zshenv $HOME/.zshenv \
+  || echo ".zshenv already exists..."
+
+[[ ! -e $HOME/.zprofile ]] && ln -s $zprofile $HOME/.zprofile \
+  || echo ".zprofile already exists..."
 
 [[ ! -e $HOME/.vimrc ]] && ln -s $vimrc $HOME/.vimrc \
   || echo ".vimrc already exists..."

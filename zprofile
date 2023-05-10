@@ -6,3 +6,6 @@ autoload -Uz compinit && compinit
 
 eval "$(oh-my-posh init zsh)"
 
+export PATH=~/.brew/bin:/Users/victor/.brew/bin:/Users/victor/.brew/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH="/Users/victor/.brew/opt/go@1.19/bin:$PATH"
+export PATH="$PATH:/Users/victor/.foundry/bin"

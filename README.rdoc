@@ -4,6 +4,6 @@ These are config files to set up a system the way I like it.
 
 == Installation
 
-  git clone git://github.com/vcastellm/dotfiles ~/.dotfiles
+  git clone git@github.com:vcastellm/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
   ./install.sh

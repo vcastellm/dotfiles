@@ -47,9 +47,6 @@ if [ -e "/usr/local/bin/direnv" ]; then
   eval "$(direnv hook bash)"
 fi
 
-#gpg-agent Pretty good changelog https://www.gnupg.org/faq/whats-new-in-2.1.html
-#This step is not necesary, but due to the outdated state of gpg libs in vautl-tec, we need to be sure that the agent is running
-eval `gpg-agent --daemon 2>/dev/null`
 # SSH_AUTH_SOCK is autoexported in the previous eval (if enable-ssh-support option is present)
 export GPG_AGENT_INFO=${HOME}/.gnupg/S.gpg-agent:66568:1
 export GPG_TTY=$(tty)
@@ -61,13 +58,8 @@ fi
 alias yaegi='rlwrap yaegi'
 alias flamegraph='~/src/github.com/brendangregg/FlameGraph/flamegraph.pl'
 
-export PATH="$WASMTIME_HOME/bin:$PATH"
-export PATH="/opt/homebrew/opt/python@3.9/libexec/bin:$PATH"
-export PATH="/Users/victorcoder/.local/share/solana/install/active_release/bin:$PATH"
-if [[ -x /usr/local/bin/monk ]]; then complete -C /usr/local/bin/monk monk; fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 . "$HOME/.cargo/env"
-if [[ -x /opt/homebrew/bin/monk ]]; then complete -C /opt/homebrew/bin/monk monk; fi
 
 #AWSume alias to source the AWSume script
 alias awsume="source awsume"
@@ -84,12 +76,5 @@ _awsume() {
 }
 complete -F _awsume awsume
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/vcastellm/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/Users/vcastellm/Downloads/google-cloud-sdk/path.bash.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/vcastellm/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/vcastellm/Downloads/google-cloud-sdk/completion.bash.inc'; fi
-export PATH="/opt/homebrew/opt/go@1.18/bin:$PATH"
 export PATH="$PATH:/Users/vcastellm/.foundry/bin"
-
 

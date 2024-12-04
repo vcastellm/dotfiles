@@ -12,6 +12,7 @@ gitignore=$dotfiles/gitignore
 bin=$dotfiles/bin
 ctags=$dotfiles/ctags
 editorconfig=$dotfiles/editorconfig
+git_prompt=$dotfiles/git-prompt.sh
 
 [[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
   || echo ".bash_profile already exists..."
@@ -48,5 +49,8 @@ editorconfig=$dotfiles/editorconfig
 
 [[ ! -e $HOME/.editorconfig ]] && ln -s $editorconfig $HOME/.editorconfig \
   || echo ".editorconfig already exists..."
+
+[[ ! -e $HOME/.git-prompt.sh ]] && ln -s $git_prompr $HOME/.git-prompt.sh \
+  || echo ".git-prompt already exists..."
 
 echo "Done"

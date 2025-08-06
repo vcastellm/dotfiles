@@ -47,11 +47,20 @@ fi
 
 alias flamegraph='~/src/github.com/brendangregg/FlameGraph/flamegraph.pl'
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 . "$HOME/.cargo/env"
+
+export PATH="$PATH:/home/vcastellm/.foundry/bin"
+
+alias zola="flatpak run org.getzola.zola"
+export BATS_LIB_PATH="/home/vcastellm/.bats/libs"
 
 export PATH="$PATH:/home/vcastellm/.foundry/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Added by `rbenv init` on Thu Apr 10 11:29:49 AM UTC 2025
+export PATH="$HOME/.rbenv/bin:$PATH"
+[ -s "$HOME/.rbenv/bin/rbenv" ] && eval "$(rbenv init - --no-rehash bash)"

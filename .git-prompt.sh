@@ -1,0 +1,1 @@
+/home/vcastellm/.git-prompt.sh

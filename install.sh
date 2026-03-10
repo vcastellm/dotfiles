@@ -1,6 +1,7 @@
 #! /bin/bash
 dotfiles=$HOME/.dotfiles
 bash_profile=$dotfiles/bash_profile
+bashrc=$dotfiles/bashrc
 zshenv=$dotfiles/zshenv
 zprofile=$dotfiles/zprofile
 vimrc=$dotfiles/vimrc
@@ -15,6 +16,9 @@ editorconfig=$dotfiles/editorconfig
 git_prompt=$dotfiles/git-prompt.sh
 
 [[ ! -e $HOME/.bash_profile ]] && ln -s $bash_profile $HOME/.bash_profile \
+  || echo ".bash_profile already exists..."
+
+[[ ! -e $HOME/.bashrc ]] && ln -s $bashrc $HOME/.bashrc \
   || echo ".bash_profile already exists..."
 
 [[ ! -e $HOME/.zshenv ]] && ln -s $zshenv $HOME/.zshenv \

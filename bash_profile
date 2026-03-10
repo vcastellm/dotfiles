@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
+if [ -f /etc/profile ]; then
+  . /etc/profile
 fi
 
+if [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi

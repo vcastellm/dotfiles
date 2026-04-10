@@ -81,6 +81,7 @@ fi
 
 export EDITOR=vim
 export GIT_EDITOR="$EDITOR"
+export TERM=xterm-256color
 
 # Don't check mail when opening terminal.
 unset MAILCHECK
@@ -143,6 +144,7 @@ fi
 
 alias flamegraph='$HOME/src/github.com/brendangregg/FlameGraph/flamegraph.pl'
 alias zola='flatpak run org.getzola.zola'
+alias omo='OPENCODE_CONFIG="$HOME/.config/opencode/omo.jsonc" opencode'
 
 lazy_load_nvm() {
   unset -f nvm node npm npx corepack
@@ -167,3 +169,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then
 fi
 
 source "$HOME/.dotfiles/prompt"
+export DISPLAY=:99.0
+
+# Added by tempoup installer
+. "/home/vcastellm/.tempo/env"
